@@ -1,26 +1,247 @@
 @import "tailwindcss";
 
 :root {
-  --background: #ffffff;
-  --foreground: #171717;
+  --color-bg: #FAFAF8;
+  --color-text: #2A2A28;
+  --color-text-light: #6B6B66;
+  --color-accent: #8B6E4E;
+  --color-accent-light: #C4A882;
+  --color-border: #E8E6E1;
+  --color-white: #FFFFFF;
+  --color-cream: #F5F3EE;
+  --color-dark: #1A1A18;
+  --color-sold: #C75050;
+  --color-available: #5A8F5A;
+  --color-inquire: #8B6E4E;
+  --nav-height: 72px;
+  --transition: 0.4s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+}
+
+/* ── DARK MODE ── */
+[data-theme="dark"] {
+  --color-bg: #1A1A18;
+  --color-text: #E8E6E1;
+  --color-text-light: #A0A09A;
+  --color-accent: #C4A882;
+  --color-accent-light: #D4BFA0;
+  --color-border: #333330;
+  --color-white: #2A2A28;
+  --color-cream: #222220;
+  --color-dark: #F5F3EE;
+  --color-sold: #E06060;
+  --color-available: #6AAF6A;
 }
 
 @theme inline {
-  --color-background: var(--background);
-  --color-foreground: var(--foreground);
-  --font-sans: var(--font-geist-sans);
-  --font-mono: var(--font-geist-mono);
+  --color-background: var(--color-bg);
+  --color-foreground: var(--color-text);
+  --color-muted: var(--color-text-light);
+  --color-accent: var(--color-accent);
+  --color-accent-light: var(--color-accent-light);
+  --color-border: var(--color-border);
+  --color-cream: var(--color-cream);
+  --color-dark: var(--color-dark);
+  --color-sold: var(--color-sold);
+  --color-available: var(--color-available);
+  --font-display: var(--font-cormorant);
+  --font-body: var(--font-outfit);
 }
 
-@media (prefers-color-scheme: dark) {
-  :root {
-    --background: #0a0a0a;
-    --foreground: #ededed;
-  }
+/* Tailwind v4 preflight handles the reset — do NOT reset padding/margin here
+   as it overrides all Tailwind utility classes */
+*, *::before, *::after { box-sizing: border-box; }
+
+html {
+  scroll-behavior: smooth;
+  -webkit-overflow-scrolling: touch; /* iOS momentum scrolling */
+  overflow-x: hidden;
 }
 
 body {
-  background: var(--background);
-  color: var(--foreground);
-  font-family: Arial, Helvetica, sans-serif;
+  font-family: var(--font-body), system-ui, sans-serif;
+  color: var(--color-text);
+  background: var(--color-bg);
+  line-height: 1.6;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  overflow-x: hidden;
+  -webkit-text-size-adjust: 100%; /* prevent iOS font scaling */
+}
+
+/* ── MOBILE-FIRST TOUCH & SCROLL ── */
+@media (max-width: 768px) {
+  :root {
+    --nav-height: 60px;
+  }
+
+  /* Ensure all painting overlays are visible on touch (no hover) */
+  .painting-overlay {
+    opacity: 1;
+    background: linear-gradient(to top, rgba(0,0,0,0.55) 0%, transparent 60%);
+  }
+
+  /* Larger touch targets */
+  button, a, [role="button"] {
+    min-height: 44px;
+    min-width: 44px;
+  }
+}
+
+/* ── TYPOGRAPHY ── */
+.font-display {
+  font-family: var(--font-display), Georgia, serif;
+}
+
+.font-body {
+  font-family: var(--font-body), system-ui, sans-serif;
+}
+
+/* ── TRANSITION ── */
+.transition-gallery {
+  transition: var(--transition);
+}
+
+/* ── NAV LINK UNDERLINE ── */
+.nav-link {
+  position: relative;
+}
+
+.nav-link::after {
+  content: '';
+  position: absolute;
+  bottom: -4px;
+  left: 0;
+  width: 0;
+  height: 1px;
+  background: var(--color-accent);
+  transition: width 0.3s;
+}
+
+.nav-link:hover::after,
+.nav-link.active::after {
+  width: 100%;
+}
+
+/* ── IMAGE PROTECTION ── */
+.image-protected {
+  -webkit-user-select: none;
+  user-select: none;
+  -webkit-touch-callout: none;
+  pointer-events: none;
+}
+
+.image-protected-wrapper {
+  position: relative;
+}
+
+.image-protected-wrapper::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  z-index: 1;
+}
+
+/* ── PAINTING CARD ── */
+.painting-overlay {
+  opacity: 0;
+  transition: opacity 0.4s ease;
+}
+
+.painting-card:hover .painting-overlay {
+  opacity: 1;
+}
+
+/* ── ANIMATIONS ── */
+@keyframes fadeInUp {
+  from { opacity: 0; transform: translateY(20px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+.animate-fade-in-up {
+  animation: fadeInUp 0.6s ease-out forwards;
+  opacity: 0;
+}
+
+@keyframes heroFadeIn {
+  from { opacity: 0; transform: scale(1.02); }
+  to { opacity: 1; transform: scale(1); }
+}
+
+.animate-hero-image {
+  animation: heroFadeIn 1.2s ease-out;
+}
+
+@keyframes heroSlideIn {
+  from { opacity: 0; transform: translateY(30px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+.animate-hero-content {
+  animation: heroSlideIn 1s ease-out 0.3s both;
+}
+
+/* ── CHAT BUTTON ARTISTIC GLOW ── */
+@keyframes chatPulse {
+  0%, 100% { box-shadow: 0 0 0 0 rgba(139, 110, 78, 0.4); }
+  50% { box-shadow: 0 0 0 12px rgba(139, 110, 78, 0); }
+}
+
+@keyframes chatFloat {
+  0%, 100% { transform: translateY(0); }
+  50% { transform: translateY(-4px); }
+}
+
+.chat-button-artistic {
+  animation: chatFloat 3s ease-in-out infinite, chatPulse 3s ease-in-out infinite;
+  background: linear-gradient(135deg, #8B6E4E 0%, #C4A882 50%, #8B6E4E 100%);
+  background-size: 200% 200%;
+  transition: all 0.4s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+}
+
+.chat-button-artistic:hover {
+  animation: none;
+  background-position: 100% 0%;
+  transform: scale(1.1);
+  box-shadow: 0 8px 32px rgba(139, 110, 78, 0.5);
+}
+
+/* Decorative ring around chat button */
+.chat-button-ring {
+  position: absolute;
+  inset: -4px;
+  border-radius: 50%;
+  border: 1px solid rgba(139, 110, 78, 0.25);
+  animation: chatPulse 3s ease-in-out infinite;
+  pointer-events: none;
+}
+
+/* ── LIGHTBOX ── */
+.lightbox-backdrop {
+  backdrop-filter: blur(20px);
+  -webkit-backdrop-filter: blur(20px);
+}
+
+/* ── SCROLLBAR ── */
+::-webkit-scrollbar {
+  width: 6px;
+}
+
+::-webkit-scrollbar-track {
+  background: var(--color-cream);
+}
+
+::-webkit-scrollbar-thumb {
+  background: var(--color-border);
+  border-radius: 3px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: var(--color-accent-light);
+}
+
+/* ── SAFE AREA (iPhone notch) ── */
+@supports (padding: env(safe-area-inset-bottom)) {
+  body {
+    padding-bottom: env(safe-area-inset-bottom);
+  }
 }
