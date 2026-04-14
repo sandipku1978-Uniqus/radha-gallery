@@ -8,7 +8,7 @@ type Props = { params: Promise<{ slug: string }> };
 
 export async function generateMetadata({ params }: Props): Promise<Metadata> {
   const { slug } = await params;
-  const collection = getCollectionBySlug(slug);
+  const collection = await getCollectionBySlug(slug);
   if (!collection) return { title: 'Collection Not Found' };
 
   return {
@@ -17,17 +17,18 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
   };
 }
 
-export function generateStaticParams() {
-  return getAllCollections().map((c) => ({ slug: c.slug }));
+export async function generateStaticParams() {
+  const collections = await getAllCollections();
+  return collections.map((c) => ({ slug: c.slug }));
 }
 
 export default async function CollectionPage({ params }: Props) {
   const { slug } = await params;
-  const collection = getCollectionBySlug(slug);
+  const collection = await getCollectionBySlug(slug);
 
   if (!collection) notFound();
 
-  const paintings = getPaintingsByCollection(slug);
+  const paintings = await getPaintingsByCollection(slug);
 
   return (
     <section className="pt-[var(--nav-height)]">

@@ -8,8 +8,8 @@ export const metadata: Metadata = {
   description: 'Get in touch with Radha Khetan. Inquire about paintings, commissions, studio visits, or collaborations.',
 };
 
-export default function ContactPage() {
-  const artist = getArtistProfile();
+export default async function ContactPage() {
+  const artist = await getArtistProfile();
 
   return (
     <section className="pt-[var(--nav-height)]">

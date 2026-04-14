@@ -8,7 +8,7 @@ type Props = { params: Promise<{ slug: string }> };
 
 export async function generateMetadata({ params }: Props): Promise<Metadata> {
   const { slug } = await params;
-  const painting = getPaintingBySlug(slug);
+  const painting = await getPaintingBySlug(slug);
   if (!painting) return { title: 'Painting Not Found' };
 
   return {
@@ -22,17 +22,18 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
   };
 }
 
-export function generateStaticParams() {
-  return getAllPaintings().map((p) => ({ slug: p.slug }));
+export async function generateStaticParams() {
+  const paintings = await getAllPaintings();
+  return paintings.map((p) => ({ slug: p.slug }));
 }
 
 export default async function PaintingPage({ params }: Props) {
   const { slug } = await params;
-  const painting = getPaintingBySlug(slug);
+  const painting = await getPaintingBySlug(slug);
 
   if (!painting) notFound();
 
-  const collectionTitle = getCollectionTitle(painting.collectionSlug);
+  const collectionTitle = await getCollectionTitle(painting.collectionSlug);
 
   return (
     <section className="pt-[var(--nav-height)]">

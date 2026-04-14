@@ -5,7 +5,7 @@ import { buildChatContext } from '@/lib/chat/context';
 export async function POST(request: Request) {
   const { messages } = await request.json();
 
-  const systemPrompt = buildChatContext();
+  const systemPrompt = await buildChatContext();
 
   const result = streamText({
     model: anthropic('claude-sonnet-4-20250514'),

@@ -31,14 +31,23 @@ export function Lightbox({
         onContextMenu={(e) => e.preventDefault()}
       >
         <div
-          className="image-protected w-full max-w-[500px] rounded-sm shadow-[0_16px_60px_rgba(0,0,0,0.12)]"
+          className="image-protected w-full max-w-[500px] rounded-sm shadow-[0_16px_60px_rgba(0,0,0,0.12)] overflow-hidden"
           style={{
             aspectRatio: painting.aspectRatio,
             background: painting.gradient,
           }}
-          role="img"
-          aria-label={painting.title}
-        />
+        >
+          {painting.imageUrl ? (
+            <img
+              src={painting.imageUrl}
+              alt={painting.imageAlt || painting.title}
+              className="w-full h-full object-cover"
+              draggable={false}
+            />
+          ) : (
+            <div className="w-full h-full" role="img" aria-label={painting.title} />
+          )}
+        </div>
       </div>
 
       {/* Details panel */}

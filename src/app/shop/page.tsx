@@ -8,8 +8,8 @@ export const metadata: Metadata = {
   description: 'Purchase original paintings by Radha Khetan. Each painting is a unique, one-of-a-kind work of art.',
 };
 
-export default function ShopPage() {
-  const paintings = getAvailablePaintings();
+export default async function ShopPage() {
+  const paintings = await getAvailablePaintings();
 
   return (
     <section className="pt-[var(--nav-height)]">

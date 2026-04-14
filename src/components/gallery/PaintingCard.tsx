@@ -18,16 +18,23 @@ export function PaintingCard({ painting }: { painting: Painting }) {
       href={`/gallery/${painting.slug}`}
       className="painting-card group block relative overflow-hidden rounded-sm bg-[var(--color-cream)] transition-gallery hover:-translate-y-1 hover:shadow-[0_20px_60px_rgba(0,0,0,0.08)] no-underline"
     >
-      {/* Painting image placeholder */}
+      {/* Painting image */}
       <div
-        className="w-full min-h-[240px] sm:min-h-[300px] lg:min-h-[320px]"
+        className="w-full min-h-[240px] sm:min-h-[300px] lg:min-h-[320px] overflow-hidden"
         style={{
           aspectRatio: painting.aspectRatio,
           background: painting.gradient,
         }}
-        role="img"
-        aria-label={painting.title}
-      />
+      >
+        {painting.imageUrl && (
+          <img
+            src={painting.imageUrl}
+            alt={painting.imageAlt || painting.title}
+            className="w-full h-full object-cover"
+            loading="lazy"
+          />
+        )}
+      </div>
 
       {/* Favorite button — top right */}
       <div className="absolute top-3 right-3 z-10 opacity-0 group-hover:opacity-100 transition-opacity">

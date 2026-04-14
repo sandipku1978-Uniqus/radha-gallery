@@ -7,14 +7,22 @@ export function Hero({ painting, artist }: { painting: Painting; artist: ArtistP
       {/* Painting — constrained height so it doesn't blow up the fold */}
       <div className="relative overflow-hidden bg-[var(--color-cream)] flex items-center justify-center p-10 md:p-12">
         <div
-          className="w-[70%] max-w-[360px] max-h-[60vh] rounded-sm shadow-[0_24px_80px_rgba(0,0,0,0.15)] animate-hero-image"
+          className="w-[70%] max-w-[360px] max-h-[60vh] rounded-sm shadow-[0_24px_80px_rgba(0,0,0,0.15)] animate-hero-image overflow-hidden"
           style={{
             aspectRatio: painting.aspectRatio,
             background: painting.gradient,
           }}
-          role="img"
-          aria-label={painting.title}
-        />
+        >
+          {painting.imageUrl ? (
+            <img
+              src={painting.imageUrl}
+              alt={painting.imageAlt || painting.title}
+              className="w-full h-full object-cover"
+            />
+          ) : (
+            <div className="w-full h-full" role="img" aria-label={painting.title} />
+          )}
+        </div>
       </div>
 
       {/* Content */}

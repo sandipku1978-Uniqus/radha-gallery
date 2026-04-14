@@ -7,8 +7,8 @@ export const metadata: Metadata = {
   description: 'Explore curated collections of original paintings by Radha Khetan — Abstract Landscapes, Nature Studies, and Mixed Media.',
 };
 
-export default function CollectionsPage() {
-  const collections = getAllCollections();
+export default async function CollectionsPage() {
+  const collections = await getAllCollections();
 
   return (
     <section className="pt-[var(--nav-height)]">
@@ -31,11 +31,20 @@ export default function CollectionsPage() {
               style={{ animationDelay: `${i * 0.1}s` }}
             >
               <div
-                className="w-full aspect-[4/5] rounded-sm mb-6 transition-gallery group-hover:-translate-y-1 group-hover:shadow-[0_20px_60px_rgba(0,0,0,0.1)]"
+                className="w-full aspect-[4/5] rounded-sm mb-6 transition-gallery group-hover:-translate-y-1 group-hover:shadow-[0_20px_60px_rgba(0,0,0,0.1)] overflow-hidden"
                 style={{ background: collection.gradient }}
-                role="img"
-                aria-label={collection.title}
-              />
+              >
+                {collection.coverImageUrl ? (
+                  <img
+                    src={collection.coverImageUrl}
+                    alt={collection.title}
+                    className="w-full h-full object-cover"
+                    loading="lazy"
+                  />
+                ) : (
+                  <div className="w-full h-full" role="img" aria-label={collection.title} />
+                )}
+              </div>
               <h2 className="font-display text-xl font-light text-[var(--color-text)] mb-2 group-hover:text-[var(--color-accent)] transition-colors">
                 {collection.title}
               </h2>

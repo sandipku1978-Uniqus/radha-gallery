@@ -1,3 +1,5 @@
+'use client';
+
 import { defineConfig } from 'sanity';
 import { structureTool } from 'sanity/structure';
 import { schemaTypes } from './sanity/schemas';
@@ -8,6 +10,7 @@ export default defineConfig({
   title: 'Radha Gallery',
   projectId: '1wb1gf6c',
   dataset: 'production',
+  basePath: '/studio',
   plugins: [structureTool({ structure })],
   schema: { types: schemaTypes },
 });

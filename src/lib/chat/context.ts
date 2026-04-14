@@ -1,10 +1,12 @@
 import { getAllPaintings, getAllCollections, getArtistProfile, getAllFAQs } from '@/lib/data';
 
-export function buildChatContext(): string {
-  const paintings = getAllPaintings();
-  const collections = getAllCollections();
-  const artist = getArtistProfile();
-  const faqs = getAllFAQs();
+export async function buildChatContext(): Promise<string> {
+  const [paintings, collections, artist, faqs] = await Promise.all([
+    getAllPaintings(),
+    getAllCollections(),
+    getArtistProfile(),
+    getAllFAQs(),
+  ]);
 
   const paintingCatalog = paintings
     .map(

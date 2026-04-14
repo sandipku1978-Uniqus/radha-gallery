@@ -6,8 +6,8 @@ export const metadata: Metadata = {
   description: 'Learn about Radha Khetan — a self-taught painter based in San Jose, California, creating abstract and nature-inspired original paintings.',
 };
 
-export default function AboutPage() {
-  const artist = getArtistProfile();
+export default async function AboutPage() {
+  const artist = await getArtistProfile();
 
   return (
     <section className="pt-[var(--nav-height)]">
@@ -46,11 +46,19 @@ export default function AboutPage() {
           {/* Photo placeholder + info */}
           <div>
             <div
-              className="w-full aspect-[3/4] rounded-sm mb-8 shadow-[0_12px_40px_rgba(0,0,0,0.08)]"
+              className="w-full aspect-[3/4] rounded-sm mb-8 shadow-[0_12px_40px_rgba(0,0,0,0.08)] overflow-hidden"
               style={{ background: artist.gradient }}
-              role="img"
-              aria-label={`Photo of ${artist.name}`}
-            />
+            >
+              {artist.photoUrl ? (
+                <img
+                  src={artist.photoUrl}
+                  alt={`Photo of ${artist.name}`}
+                  className="w-full h-full object-cover"
+                />
+              ) : (
+                <div className="w-full h-full" role="img" aria-label={`Photo of ${artist.name}`} />
+              )}
+            </div>
 
             <div className="space-y-4">
               <div>

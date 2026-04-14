@@ -7,9 +7,8 @@ export const metadata: Metadata = {
   description: 'Browse the complete collection of original paintings by Radha Khetan. Abstract landscapes, nature studies, and mixed media works.',
 };
 
-export default function GalleryPage() {
-  const paintings = getAllPaintings();
-  const collections = getAllCollections();
+export default async function GalleryPage() {
+  const [paintings, collections] = await Promise.all([getAllPaintings(), getAllCollections()]);
 
   return (
     <section className="pt-[var(--nav-height)] py-12 md:py-16 lg:py-24 px-6 sm:px-10 md:px-16 lg:px-20">
