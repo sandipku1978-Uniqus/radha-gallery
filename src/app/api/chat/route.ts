@@ -1,4 +1,4 @@
-import { streamText, createUIMessageStreamResponse } from 'ai';
+import { streamText, convertToModelMessages, createUIMessageStreamResponse } from 'ai';
 import { anthropic } from '@ai-sdk/anthropic';
 import { buildChatContext } from '@/lib/chat/context';
 
@@ -10,7 +10,7 @@ export async function POST(request: Request) {
   const result = streamText({
     model: anthropic('claude-sonnet-4-20250514'),
     system: systemPrompt,
-    messages,
+    messages: await convertToModelMessages(messages),
     maxOutputTokens: 500,
   });
 
